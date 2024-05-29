@@ -8,9 +8,12 @@ public:
     Core();
     ~Core();
 
-    void Init();
-
 private:
+
+    void Init();
+    void Tick();
+    void Render();
+    void HandleEvents();
 
     const int SCREEN_WIDTH = 1280;
     const int SCREEN_HEIGHT = 720;

@@ -4,5 +4,4 @@
 int main(){
 
     Core::Core core;
-    core.Init();
 }
