@@ -44,6 +44,10 @@ namespace Core {
 
             if (outEvent.type == sf::Event::Closed)
                 m_Window->close();
+
+            if(outEvent.type == sf::Event::MouseButtonPressed)
+                if(outEvent.mouseButton.button == sf::Mouse::Left)
+                    SpawnCircle(outEvent.mouseButton.x, outEvent.mouseButton.y);
         }
     }
 
@@ -82,6 +86,11 @@ namespace Core {
 
         float fps = 1.f / currentTime;
         m_FpsText.setString("FPS: " + std::to_string(fps));
+    }
+
+    void Core::SpawnCircle(int xPos, int yPos) {
+        Application::Circle newCircle(30, xPos, yPos);
+        m_Circles.push_back(newCircle);
     }
 
 } // namespace Core

@@ -8,6 +8,12 @@ namespace Application {
         m_Velocity.y = 10;
     }
 
+    Circle::Circle(int radius, int xPos, int yPos) {
+        m_Shape = sf::CircleShape(radius);
+        m_Shape.setPosition(xPos, yPos);
+        m_Velocity.y = 10;
+    }
+
     void Circle::Tick(float deltaTime) {
 
         sf::Vector2f newPos = m_Shape.getPosition();

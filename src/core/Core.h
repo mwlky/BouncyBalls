@@ -16,6 +16,8 @@ private:
     void Render();
     void HandleEvents();
 
+    void SpawnCircle(int xPos, int yPos);
+
     float CalculateDeltaTime(double &lastTime, sf::Clock &clock);
     void DisplayFPS(float currentTime);
 

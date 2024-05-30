@@ -8,6 +8,7 @@ class Circle {
 
 public:
   Circle(int radius);
+  Circle(int radius, int xPos, int yPos);
   ~Circle() = default;
 
   void BounceVertically();
