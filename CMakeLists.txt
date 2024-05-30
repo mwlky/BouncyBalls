@@ -9,7 +9,9 @@ find_package(SFML COMPONENTS graphics window system REQUIRED)
 add_executable(BouncyBalls src/main.cpp
                             src/core/Core.cpp
                             src/core/Core.h
-                            )
+        src/shapes/Circle.cpp
+        src/Macros.h
+)
 
 
 

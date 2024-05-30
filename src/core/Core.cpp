@@ -1,7 +1,6 @@
 #include "Core.h"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/System/Clock.hpp>
-#include <iostream>
 
 namespace Core {
 
@@ -12,6 +11,8 @@ namespace Core {
 
         m_Window->setFramerateLimit(60);
 
+        m_FpsFont.loadFromFile("../fonts/Coffee Fills.ttf");
+
         Init();
     }
 
@@ -20,20 +21,18 @@ namespace Core {
     void Core::Init() {
 
         sf::Clock deltaClock;
-        float lastTime = 0;
+        double lastTime = 0;
 
-        sf::Font font;
-        font.loadFromFile("../fonts/Coffee Fills.ttf");
+        Application::Circle circle(30);
+        m_Circles.push_back(circle);
 
         while (m_Window->isOpen()) {
-
-            HandleEvents();
-            Render();
-
-            DisplayFPS(font, deltaClock);
             float deltaTime = CalculateDeltaTime(lastTime, deltaClock);
 
-            Tick(deltaTime);
+            HandleEvents();
+            Tick(deltaTime * 0.001f);
+
+            Render();
         }
     }
 
@@ -42,36 +41,47 @@ namespace Core {
         sf::Event outEvent;
 
         while (m_Window->pollEvent(outEvent)) {
-            if (outEvent.type == sf::Event::Closed) {
 
+            if (outEvent.type == sf::Event::Closed)
                 m_Window->close();
-            }
         }
     }
 
     void Core::Render() {
 
-        m_Window->display();
         m_Window->clear();
+        m_Window->draw(m_FpsText);
+
+        for (Application::Circle &circle: m_Circles)
+            m_Window->draw(circle.GetShape());
+
+        m_Window->display();
     }
 
-    void Core::Tick(float deltaTime) {}
+    void Core::Tick(float deltaTime) {
 
-    float Core::CalculateDeltaTime(float& lastTime, sf::Clock& clock) {
-
-        float currentTime = clock.restart().asSeconds();
-        float deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-
-        return deltaTime;
+        for (Application::Circle &circle: m_Circles)
+            circle.Tick(deltaTime);
     }
 
-    void Core::DisplayFPS(const sf::Font &Font, sf::Clock &clock) {
-        float fps = 1.f / clock.getElapsedTime().asSeconds();
-        std::string text = "FPS: " + std::to_string(fps);
+    float Core::CalculateDeltaTime(double &lastTime, sf::Clock &clock) {
 
-        sf::Text textToDraw(text, Font);
-        m_Window->draw(textToDraw);
+        sf::Time currentTime = clock.restart();
+        double deltaTime = currentTime.asMilliseconds() - lastTime;
+        lastTime = currentTime.asSeconds();
+
+        DisplayFPS(currentTime.asSeconds());
+
+        return deltaTime * 0.001f;
+    }
+
+    void Core::DisplayFPS(float currentTime) {
+
+        m_FpsText.setFont(m_FpsFont);
+        m_FpsText.setCharacterSize(40);
+
+        float fps = 1.f / currentTime;
+        m_FpsText.setString("FPS: " + std::to_string(fps));
     }
 
 } // namespace Core

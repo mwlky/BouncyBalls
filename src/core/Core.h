@@ -1,4 +1,5 @@
 #include "SFML/Graphics.hpp"
+#include "../shapes/Circle.h"
 
 namespace Core {
 
@@ -15,13 +16,15 @@ private:
     void Render();
     void HandleEvents();
 
-    float CalculateDeltaTime(float& lastTime, sf::Clock& clock);
-    void DisplayFPS(const sf::Font& Font, sf::Clock& clock);
-
-    const int SCREEN_WIDTH = 1280;
-    const int SCREEN_HEIGHT = 720;
+    float CalculateDeltaTime(double &lastTime, sf::Clock &clock);
+    void DisplayFPS(float currentTime);
 
     sf::RenderWindow* m_Window = nullptr;
+
+    sf::Text m_FpsText;
+    sf::Font m_FpsFont;
+
+    std::vector<Application::Circle> m_Circles;
 
 };
 } // namespace Core
